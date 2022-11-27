@@ -1,0 +1,324 @@
+\section{Equation of Motion}
+The Equation of Motion is one of the most frequently solved equations in engineering and science. It is an outcome of Newton's second law of motion and expresses the equality of internal and external forces for a system.
+
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[every node/.style={outer sep=0pt},thick,
+ mass/.style={draw,thick},
+ spring/.style={thick,decorate,decoration={zigzag,pre length=0.3cm,post
+ length=0.3cm,segment length=6}},
+ ground/.style={fill,pattern=north east lines,draw=none,minimum
+ width=0.75cm,minimum height=0.3cm},
+ dampic/.pic={\fill[white] (-0.1,-0.3) rectangle (0.3,0.3);
+ \draw (-0.3,0.3) -| (0.3,-0.3) -- (-0.3,-0.3);
+ \draw[line width=1mm] (-0.1,-0.3) -- (-0.1,0.3);}]
+
+  \node[mass,minimum width=3.5cm,minimum height=2cm,fill=white] (m1) {$m$};
+
+  \node[left=2cm of m1,ground,minimum width=3mm,minimum height=2.5cm] (g1){};
+  \draw (g1.north east) -- (g1.south east);
+
+  \draw[spring] ([yshift=3mm]g1.east) coordinate(aux)
+   -- (m1.west|-aux) node[midway,above=1mm]{$k$};
+
+  \draw ([yshift=-3mm]g1.east) coordinate(aux')
+   -- (m1.west|-aux') pic[midway]{dampic} node[midway,below=3mm]{$c$};
+
+  \foreach \X in {1}  
+  {\draw[thin] (m\X.north) -- ++ (0,1) coordinate[midway](aux\X);
+   \draw[latex-] (aux\X) -- ++ (-0.5,0) node[above]{$f$}; 
+   \draw[thin,dashed] (m\X.south) -- ++ (0,-1) coordinate[pos=0.85](aux'\X);
+   \draw[latex-] (aux'\X) -- ++ (-1,0) node[midway,above]{$x$}
+    node[left,ground,minimum height=7mm,minimum width=1mm] (g'\X){};
+   \draw[thick] (g'\X.north east) -- (g'\X.south east);
+  }
+  
+\end{tikzpicture}
+\end{center}
+\caption{Simple Oscillatory System}
+\label{fig:simpleOscillatorySystem}
+\end{figure}
+Given a simple oscillatory system as shown in \cref{fig:simpleOscillatorySystem} with a spring having stiffness $k$, a damping element having damping coefficient $c$ and a body having mass $m$ and $x$ as its generalized location co-ordinate, the equation of motion could be written as
+\begin{align}
+m \ddot{x}(t) + c \dot{x}(t) + k x(t) = f(t) 
+\label{eq201}
+\end{align}
+In \cref{eq201}, the term $m \ddot{x}(t)$ represents the inertia force, $c \dot{x}(t)$ represents the force due to damping element, $k x(t)$ represents the spring force. Together, these terms represent the internal forces and the term $f(t)$ represents the external excitation force on the simple oscillatory system. 
+
+Furthermore, for an oscillatory system with many bodies as shown in \cref{fig:multibodyOscillatorySystem}, a system of equations can be developed and the vectorized equation of motion can be expressed as below
+\\ TODO mention non linar form and then linearized form where C = P + G and D = N + K
+\begin{equation}
+\begin{gathered}
+\mathbf{M} \mathit{\ddot{X}}(t) + \mathbf{C} \mathit{\dot{X}}(t) + \mathbf{K} \mathit{X}(t) = \mathit{F}(t) \\
+\\
+\text{where,}\; 
+\mathit{X} = \begin{pmatrix}
+           x_{1}(t) \\
+           x_{2}(t) \\
+           \vdots \\
+           x_{n}(t)
+         \end{pmatrix}
+, 
+\mathit{\dot{X}} = \begin{pmatrix}
+           \dot{x}_{1}(t) \\
+           \dot{x}_{2}(t) \\
+           \vdots \\
+           \dot{x}_{n}(t)
+         \end{pmatrix}
+,
+\text{and }
+\mathit{\ddot{X}} = \begin{pmatrix}
+           \ddot{x}_{1}(t) \\
+           \ddot{x}_{2}(t) \\
+           \vdots \\
+           \ddot{x}_{n}(t)
+         \end{pmatrix}
+\end{gathered}
+\label{eq202}
+\end{equation}
+
+In \cref{eq202}, $\mathit{X}(t)$ is the vector of generalized location co-ordinates for the system, $\mathbf{M}$ is the Inertia Matrix, $\mathbf{C} \mathit{\dot{X}}(t)$ represents forces due to velocity dependent damping and gyroscopic effects, $\mathbf{K}$ is the Stiffness Matrix and $\mathit{F}(t)$ is the vector of external excitation forces.
+
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[every node/.style={outer sep=0pt},thick,
+ mass/.style={draw,thick},
+ spring/.style={thick,decorate,decoration={zigzag,pre length=0.3cm,post
+ length=0.3cm,segment length=6}},
+ ground/.style={fill,pattern=north east lines,draw=none,minimum
+ width=0.75cm,minimum height=0.3cm},
+ dampic/.pic={\fill[white] (-0.1,-0.3) rectangle (0.3,0.3);
+ \draw (-0.3,0.3) -| (0.3,-0.3) -- (-0.3,-0.3);
+ \draw[line width=1mm] (-0.1,-0.3) -- (-0.1,0.3);}]
+
+  \node[mass,minimum width=2.5cm,minimum height=1.5cm,fill=white] (m1) {$m_1$};
+  \node[mass,minimum width=2.5cm,minimum height=1.5cm,fill=white,right=2cm of
+  m1] (m2) {$m_2$};
+  \node[mass,minimum width=2.5cm,minimum height=1.5cm,fill=white,right=2cm of
+  m2] (mn) {$m_n$};
+  
+  \node[left=2cm of m1,ground,minimum width=3mm,minimum height=2.5cm] (g1){};
+  \draw (g1.north east) -- (g1.south east);
+
+  \draw[spring] ([yshift=3mm]g1.east) coordinate(aux)
+   -- (m1.west|-aux) node[midway,above=1mm]{$k_1$};
+  \draw[spring]  (m1.east|-aux) -- (m2.west|-aux) node[midway,above=1mm]{$k_2$};
+   \draw[spring]  (m2.east|-aux) -- (mn.west|-aux) node[midway,above=1mm]{$k_n$};
+
+  \draw ([yshift=-3mm]g1.east) coordinate(aux')
+   -- (m1.west|-aux') pic[midway]{dampic} node[midway,below=3mm]{$c_1$}
+     (m1.east|-aux') -- (m2.west|-aux') pic[midway]{dampic} node[midway,below=3mm]{$c_2$}
+     (m2.east|-aux') -- (mn.west|-aux') pic[midway]{dampic} node[midway,below=3mm]{$c_n$};
+
+  \foreach \X in {1,2,n}  
+  {\draw[thin] (m\X.north) -- ++ (0,1) coordinate[midway](aux\X);
+   \draw[latex-] (aux\X) -- ++ (-0.5,0) node[above]{$f_\X$}; 
+   \draw[thin,dashed] (m\X.south) -- ++ (0,-1) coordinate[pos=0.85](aux'\X);
+   \draw[latex-] (aux'\X) -- ++ (-1,0) node[midway,above]{$x_\X$}
+    node[left,ground,minimum height=7mm,minimum width=1mm] (g'\X){};
+   \draw[thick] (g'\X.north east) -- (g'\X.south east);
+  }
+  
+\end{tikzpicture}
+\end{center}
+\caption{Oscillatory System with Many Bodies}
+\label{fig:multibodyOscillatorySystem}
+\end{figure}
+
+The \cref{eq202} could also represent the equation of motion for a Finite Element Model. In such a formulation, the vector $\mathit{X}(t)$ would then represent the nodal displacements. 
+
+Inorder to solve \cref{eq201} using the Time Integration schemes that were discussed in the previous chapter, it would be helpful to reformulate higher-order differential equation into a set of first-order differential equations. Doing so would eventually lead to the State-Space representation.
+\section{State-Space Representation}
+Let us define two functions $u(t)$ and $v(t)$ as shown below. On substituting \cref{eq203} in \cref{eq201} we get \cref{eq204}. Further, rearanging \cref{eq204} and rewriting \cref{eq203b} we get a system of first-order ordinary differential equations in \cref{eq205} and \cref{eq206}. Representing these together in a vector formulation gives the \emph{non-linear} form of the State-Space representation. 
+\begin{subequations}\label{eq203}
+\begin{align}
+u(t) &= x(t) \label{eq203a}\\
+v(t) &= \dot{x}(t) = \dot{u}(t)\label{eq203b}
+\end{align}
+\end{subequations}
+\begin{align}
+m \dot{v}(t) &= -cv(t) - ku(t) + f(t) \label{eq204}\\
+\dot{v}(t) &= -\frac{c}{m} v(t) - \frac{k}{m} u(t) + f(t)\label{eq205}\\[3pt]
+\dot{u}(t) &= v(t)\label{eq206}\\[10pt]
+\begin{pmatrix}
+\dot{v}(t) \\[3pt]
+\dot{u}(t)
+\end{pmatrix}
+&= 
+\begin{pmatrix}
+-\frac{c}{m} v(t) - \frac{k}{m} u(t) + f(t) \\[3pt] 
+v(t)
+\end{pmatrix}\label{eq207}
+\end{align}
+In the case of the simple oscillatory system considered, \cref{eq207} turns out to be linear and can be expressed as shown in \cref{eq208}. 
+\begin{gather}
+\dot{Y}(t)\label{eq208}
+= \mathbf{A} Y(t) + B(t) = F(t, \mathbf{A}, Y, B)\\[5pt]
+\text{where, } 
+\dot{Y}(t) =
+\begin{pmatrix}
+	\dot{v}(t) \\[3pt]
+	\dot{u}(t)
+\end{pmatrix}
+\text{, }
+Y(t) =
+\begin{pmatrix}
+	v(t) \\[3pt]
+	u(t)
+\end{pmatrix}
+\text{, }
+\mathbf{A} =
+\begin{bmatrix}
+		-\frac{c}{m} & - \frac{k}{m}\\[3pt]
+		1 & 0
+\end{bmatrix}
+\text{and  } 
+B(t) =
+\begin{pmatrix}
+f(t) \\[3pt] 
+0
+\end{pmatrix}\notag
+\end{gather}
+Here, \cref{eq208} is called the \emph{linearized} State-Space representation and $\mathit{Y}(t)$ is the \emph{state vector} for the given system of first-order ordinary differential equations. Also, notice that \cref{eq208} is of the form of \cref{eq103} as briefly described in \cref{sec11}. This method can be generalized to any higher-order ordinary differential equation. For eg. one would need define $w(t) = \ddot{x}(t)$ and proceed with the steps as described in \cref{eq203} to \cref{eq207} to finally arrive at the form in \cref{eq208}.
+
+Inorder to proceed with the solution of \cref{eq201}, Initial Conditions need to be provided. Since \cref{eq201} is a second-order differential equation, two initial values are needed. In the case of the simple oscillatory system considered, these would be the initial position $x_0 = x(t_0)$ and initial velocity $v_0 = v(t_0)$. For the vectorized solution schemes, the Initial Condition is prescribed in terms of the state vector at time $t_0$ as shown below.
+\begin{equation}\label{eq209}
+Y_{0} = Y(t_0) = \begin{pmatrix} v(t_0) \\ u(t_0) \end{pmatrix} = \begin{pmatrix} v_0 \\ u_0 \end{pmatrix}
+\end{equation}
+\section{Scalar Solution Schemes}
+In this section the focus would be to use \cref{eq205} and \cref{eq206} to find a solution to the Equation of Motion by applying the Time Integration schemes as discussed earlier. Although they are simple to implement numerically, scalar solution schemes would lead to lagging of the approximate solution behind the exact solution. This is because while marching forward in time, \cref{eq205} and \cref{eq206} are not simultateously solved.
+\subsection{Explicit Euler Method}
+On application of the Explicit Euler scheme as described in \cref{eq104} to \cref{eq205} and \cref{eq206}, the following time discretization is obtained for the position $u$ and velocity $v$ of the simple oscillatory system. As it can be seen, marching forward in time is straightforward and only uses values computed in the previous time step. 
+\begin{align}
+v_{n+1} &= v_{n} + h \; (-\frac{c}{m} v_{n} - \frac{k}{m} u_{n} + f_{n})\label{eq210}\\
+u_{n+1} &= u_{n} + h \; (v_{n})\label{eq211}
+\end{align}
+Due to discretization using the Explicit Euler scheme in \cref{eq211}, for the computation of displacement at next time step $u_{n+1}$, the value of velocity from the previous time step $v_{n}$ is used, eventhough a newer value $v_{n+1}$ is available after computing \cref{eq210}.
+
+//TODO: Add Plot for Solution from Python Code
+\subsection{Semi-Implicit Euler Method}
+As an improvement to the Explicit Euler scheme, if the newly computed value of velocity at the next time step $v_{n+1}$ is used for the computation of position at the next time step $u_{n+1}$ in \cref{eq213}, the appoximate solution would be improved and the lag of the approximated displacement in comparison to the exact solution would be reduced. 
+\begin{align}
+v_{n+1} &= v_{n} + h \; (-\frac{c}{m} v_{n} - \frac{k}{m} u_{n} + f_{n})\label{eq212}\\
+u_{n+1} &= u_{n} + h \; (v_{n+1})\label{eq213}
+\end{align}
+It can be seen that \cref{eq213} is the result of application of the Implicit Euler scheme as described in \cref{eq105} to \cref{eq206}, whereas \cref{eq212} is identical to \cref{eq210}, a result of application of Explicit Euler scheme to \cref{eq205}. Hence, this scheme is called Semi-Implicit Euler  Method.
+
+//TODO: Add Plot for Solution from Python Code
+
+\section{Vectorized Solution Schemes}
+In this section, solution of the Equation of Motion is sought by using Matrix-Vector methods. Although, their implementation is not as straight-forward as the scalar solution schemes, the phase lag between the approximate solution and the exact solution is eliminated. This results from the simultaneous computation of velocity and position at the next time step by combining them in the \emph{state-vector} as shown in \cref{eq208} and restated below.
+\begin{equation}\label{eq214}
+ Y(t) =
+\begin{pmatrix}
+	v(t) \\[3pt]
+	u(t)
+\end{pmatrix}
+ = 
+ \begin{pmatrix}
+	\dot{x}(t) \\[3pt]
+	x(t)
+\end{pmatrix}
+\end{equation}
+\subsection{Explicit Euler Method (Vectorized)}
+The vectorized Explicit Euler scheme is obtained by plainly combining \cref{eq210} and \cref{eq211} into \cref{eq215}. Hence, although this is a vectorized solution scheme, the approximate solution for displacement $u(t)$ still lags behind the exact solution. The intial condition $Y_0$ for time stepping is as described in \cref{eq209}.
+\begin{gather}\label{eq215}
+Y_{n+1} =\; Y_{n} \;+ \; h \; F(t_n, \mathbf{A}, Y_{n}, B_{n})\\[5pt]
+\text{where, }
+F(t_n, \mathbf{A}, Y_{n}, B_{n})
+=
+\begin{pmatrix}
+-\frac{c}{m} v_{n} - \frac{k}{m} u_{n} + f_{n} \\[3pt] 
+v_{n} 
+\end{pmatrix}\notag \\
+\text{and }
+ n = 0, 1, 2, \hdots \notag
+\end{gather}
+
+\subsection{Implicit Euler - Iterative Convergence Method}
+Building upon Fixed Point Iteration scheme as explained in \cref{sec:implicitEulerIterative} and extending \cref{eq115} and \cref{eq116} to the State-Space representation given by \cref{eq208}, the following Implicit Euler scheme is obtained. Here, \cref{eq216} is the Predictor equation for every new time step and \cref{eq217} is the Corrector equation  that is used for convergence of the approximate solution for the current time step. Although this is an Implicit Euler scheme, numerical approximation errors could lead to divergence when a large time step is used for computations.
+\begin{alignat}{3}
+\text{Predictor: }& Y_{n+1}^{(j)} &=\; Y_{n} \;+ \;& h \; F(t_n, \mathbf{A}, Y_{n}, B_{n})\label{eq216}\\[0pt]
+\text{Corrector: }& Y_{n+1}^{(j+1)} &=\; Y_{n} \;+ \;& h \; F(t_{n+1}, \mathbf{A}, Y_{n+1}^{(j)}, B_{n+1})\label{eq217}
+\end{alignat}
+\begin{equation}
+\text{for } n \text{ and } j= 0, 1, 2, \hdots \notag \\[0pt]
+\end{equation}
+
+Another method for obtaining Iterative Convergence is the Newton-Raphson Method where, firstly a Newton Polynomial $G(Y_{n+1}) = 0$ is obtained by applying Implicit Euler scheme to \cref{eq208} as shown below 
+\begin{gather}\label{eq218}
+Y_{n+1} =\; Y_{n} \;+ \;  \mathbf{A} h Y_{n+1} + h B_{n+1} \notag \\
+(\mathbf{I} - \mathbf{A} h) Y_{n+1} + Y_{n} + h B_{n+1} = 0 
+\end{gather}
+Now, the only unknown in \cref{eq218} is the state-vector at the new time step $Y_{n+1}$. Inorder to find the roots of this Vector Polynomial, the Newton-Raphson Method for vector fields can be utilized. 
+
+//TODO Review and expand Newton-Raphson Method for vector functions
+
+//TODO Add Plot for Solution from Python Code
+
+\subsection{Implicit Euler - Matrix Inversion Method} 
+For the Matrix Inversion Method, instead of starting with the state-space representation in \cref{eq208}, the Implicit Euler scheme is applied to \cref{eq205} and \cref{eq206}. As a result, the following two equations are obtained.
+\begin{align}
+v_{n+1} &= v_{n} + h \; (-\frac{c}{m} v_{n+1} - \frac{k}{m} u_{n+1} + f_{n+1})\label{eq219}\\
+u_{n+1} &= u_{n} + h \; (v_{n+1})\label{eq220}
+\end{align}
+The time discretization expressed in \cref{eq219} and \cref{eq220} is valid for all time steps. By substituing the values for $n = 0, 1,\hdots, n-1$ a linear system of equations \cref{eq221} to \cref{eq226} is developed by keeping known values on the right and unknown values on the left as shown below. 
+\begin{alignat}{3}
+(1 + h\frac{c}{m})\; &v_{1} +& \;(h\frac{k}{m})u_{1} &= f_{1} + v_{0}\label{eq221}\\
+(-h)\; &v_{1} +& u_{1} &= u_{0} \label{eq222}\\
+(1 + h\frac{c}{m})\; &v_{2} +& \;(h\frac{k}{m})u_{2} - v_{1} &= f_{2} \label{eq223} \\
+(-h)\; &v_{2} +& u_{2} - u_{1} &= 0 \label{eq224}\\
+& & &\vdots\notag\\
+(1 + h\frac{c}{m})\; &v_{n} +& \;(h\frac{k}{m})u_{n} - v_{n-1} &= f_{n} \label{eq225}\\
+(-h)\; &v_{n} +& u_{n} - u_{n-1} &= 0 \label{eq226}
+\end{alignat}
+This linear system of equations  could then be reformulated as a \emph{matrix-vector} equation as in \cref{eq227}. The solution vector $\mathbf{u}$ to \cref{eq227} is then obtained by \cref{eq228} which requires inverting the matrix $\mathbf{A}$. 
+\begin{gather}
+\mathbf{A} \mathbf{u} = \mathbf{b}\label{eq227}\\[5pt]
+\text{where,}\notag\\ \mathbf{A} = 
+\begin{bmatrix}
+           (1 + h\frac{c}{m}) & (h\frac{k}{m}) & 0 & 0 & \ldots & 0 & 0 & 0 & 0\\
+           (-h) & 1 & 0 & 0 & \ldots & 0 & 0 & 0 & 0\\
+           -1 & 0 & (1 + h\frac{c}{m}) & (h\frac{k}{m}) & \ldots & 0 & 0 & 0 & 0\\
+           0 & -1 &  (-h) & 1 & \ldots & 0 & 0 & 0 & 0\\
+           \vdots & \vdots & \vdots & \vdots & \ddots &\vdots & \vdots&\vdots & \vdots\\           0 & 0 & 0 & 0 &\ldots & (1 + h\frac{c}{m}) & (h\frac{k}{m}) & 0 & 0\\
+           0 & 0 & 0 & 0 &\ldots & (-h) & 1 & 0 & 0\\
+           0 & 0 & 0 & 0 &\ldots & -1 & 0 & (1 + h\frac{c}{m}) & (h\frac{k}{m})\\
+           0 & 0 & 0 & 0 &\ldots & 0 & -1 & (-h) & 1
+\end{bmatrix}\notag\\[10pt]
+\mathbf{u} =
+\begin{pmatrix}
+           v_{1}\\
+           u_{1}\\
+           v_{2}\\
+           u_{2}\\
+           \vdots \\
+           v_{n-1}\\
+           u_{n-1}\\
+           v_{n}\\
+           u_{n}\\
+\end{pmatrix} \text{ and } 
+\mathbf{b}=
+\begin{pmatrix}
+          h f_1 + v_0\\
+           u_0\\
+           h f_2\\
+           0 \\
+           \vdots \\
+           h f_{n-1}\\
+           0 \\
+           h f_{n}\\
+           0 \\
+\end{pmatrix} \notag
+\end{gather}
+\begin{equation}
+\\[5pt]
+\mathbf{u} = \mathbf{A^{-1}} \mathbf{b} \label{eq228}
+\end{equation}
+
+Although, matrix inversion is necessary, using this scheme gives the solution for the complete time interval of the solution at once. %Hence, if a space-time formulation is desired, like in  Structural Mechanics problems, building upon this methodology is key.
+ 
+//TODO Add Plot for Solution from Python Code.
+
+\section{Example Problems - Derivation of Equation of Motion}
+\cite[See][]{stutts_daniel_s_1995_4457929}

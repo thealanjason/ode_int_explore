@@ -1,0 +1,182 @@
+\section{Numerical Time Integration Schemes}
+The algorithms discussed in section \ref{sec:timeintegration} will work for any given problem. However, for the sake of clarity, the following initial value problem will be used to describe the numerical implementation of the time integration schemes.
+\begin{center}
+$\dot{y} = \lambda (y - \sin t) + \cos t$
+\end{center}
+
+\subsection{Explicit Euler Method}
+\begin{python}
+def explicit_euler(h, n, f, y_init, t_init):
+    # Setting Initial Conditions for the Initial Value Problem
+    y_0 = y_init
+    t_0 = t_init
+
+    # Initializing Solution Arrays with Initial Values
+    y_explicit = np.array(y_0)
+    t_explicit = np.array(t_0)
+
+    # Initializing Parameters for Time Integration
+    y_next = y_0
+    t_next = t_0
+
+    # Marching Forward in Time
+    for i in range(n):
+
+        # Calculate Solution at Next Time Step
+        y_next = y_next + h * (f(y_next, t_next))
+
+        # Increment Time Step
+        t_next = t_next + h
+
+        # Store Values for Plotting
+        y_explicit = np.append(y_explicit, y_next)
+        t_explicit = np.append(t_explicit, t_next)
+
+    return y_explicit, t_explicit
+\end{python}
+
+
+\subsection{Implicit Euler Method - Analytical Reformulation}
+\begin{python}
+def f_hty(h, f, t, y):
+    # Reformulated Derivative Function in h, t and y
+    # Needs to be formulated for the given IVP
+    return h * (1 / (1 - h*lmda) * f(y, t))
+
+def implicit_euler_analytical(h, n, f_hty, y_init, t_init):
+    # Setting Initial Conditions for the Initial Value Problem
+    y_0 = y_init
+    t_0 = t_init
+	
+    # Initializing Solution Arrays
+    y_implicit_1 = np.array(y_0)
+    t_implicit_1 = np.array(t_0)
+
+    # Initializing Parameters for Time Integration
+    y_next = y_0
+    t_next = t_0
+
+    # Marching Forward in time
+    for i in range(n):
+
+        # Increment Time
+        t_next = t_next + h 
+
+        # Calculate Solution at Next Time Step
+        y_next = 
+         + f_hty(h, f, t_next, y_next)
+
+        # Storing Values for Plotting
+        y_implicit_1 = np.append(y_implicit_1, y_next)
+        t_implicit_1 = np.append(t_implicit_1, t_next)
+
+    return y_implicit_1, t_implicit_1
+\end{python}
+
+\subsection{Implicit Euler Method - Matrix Inversion}
+\begin{python}
+def implicit_euler_matrix(h, n, y_init, t_init):
+    # Setting Initial Conditions for the Initial Value Problem
+    y_0 = y_init
+    t_0 = t_init
+
+    # Initializing Solution Arrays with Intitial Values
+    y_implicit_2 = np.array(y_0)
+    t_implicit_2 = np.array(t_0)
+
+    # Initializing Parameters for Solution
+    t_next = t_0
+    b = np.zeros(n)
+    A = np.zeros(n*n).reshape(n, n)
+
+    #Setting Up Vector b
+    for i in range(n):
+        t_next = t_next + h
+        t_implicit_2 = np.append(t_implicit_2, t_next)
+        b_n = -h * (lmda * math.sin(t_next) - math.cos(t_next))
+        if i==0:
+            b[i] = b_n + y_0
+        else:
+            b[i] = b_n
+
+
+    # Setting Up Matrix A
+    for i in range(n):
+        A[i,i] = 1 - h * lmda
+        if i > 0:
+            A[i, i-1] = -1
+
+    # Matrix Inversion
+    A_inv = np.linalg.inv(A)
+
+    # Calculating Solution Space
+    # A * y = b -----> y = inv(A) * b
+    y_sol = A_inv @ b
+
+    # Adding Initial Value to Solution Space
+    y_implicit_2 = np.append(y_implicit_2, y_sol)
+
+    return y_implicit_2, t_implicit_2
+\end{python}
+
+\subsection{Implicit Euler Method - Fixed Point Iteration}
+\begin{python}
+def implicit_euler_iterative(h, n, f, y_init, t_init, maxitr, tol):
+	# Setting Initial Conditions for the Initial Value Problem
+    y_0 = y_init
+    t_0 = t_init
+    
+    # Initializing Solution Arrays
+    y_implicit_3 = np.array(y_0)
+    t_implicit_3 = np.array(t_0)
+
+    # Initializing Parameters for Time Integration
+    y_next = y_0
+    t_next = t_0
+    convergence = True
+
+    # Marching Forward in time
+    for i in range(n):
+        if (convergence):
+            # Initialize Error for Convergence testing
+            err = 1
+            j = 0
+
+            # Predictor - Explicit Euler
+            y_next_iter = y_next + h * (f(y_next, t_next))
+
+            # Increment Time
+            t_next = t_next + h
+
+            # Iterative Convergence using Corrector
+            while(convergence):
+                # Store previous iteration to calculate error
+                y_prev_iter = y_next_iter
+
+                # Corrector 
+                y_next_iter = y_next + h * f(y_next_iter, t_next)
+
+
+                # Calculate Error
+                err = abs(y_next_iter - y_prev_iter)
+                
+                # Increment Iteration Counter
+                j +=1
+
+                # When solution converges 
+                if(err < tol):
+                    # Use converged Value for next Time Step
+                    y_next = y_next_iter
+
+                    # Store Values for Plotting
+                    y_implicit_3 = np.append(y_implicit_3, y_next)
+                    t_implicit_3 = np.append(t_implicit_3, t_next)
+                    break
+
+                # When solution diverges
+                if(j > maxitr):
+                    convergence = False
+                   
+    return y_implicit_3, t_implicit_3
+\end{python}
+\pagebreak[4]

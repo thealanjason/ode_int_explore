@@ -1,0 +1,75 @@
+\documentclass[12pt, twoside]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage[nameinlink,]{cleveref}
+\graphicspath{{./1_Images/}}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{patterns,decorations.pathmorphing,positioning}
+%\addtokomafont{disposition}{\rmfamily}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO, LE]{\rightmark}
+\fancyfoot{}
+\fancyfoot[RO, LE]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{pythonhighlight}
+
+\usepackage[style=alphabetic,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+\title{
+	{Exploration of Time Integration Schemes for Ordinary Differential Equations with Application to Equations of Motion}\\
+}
+
+\author{Correa, Alan Jason}
+\date{}
+
+\pagenumbering{roman}
+\begin{document}
+
+\maketitle
+
+\chapter*{Abstract}
+\input{0_Chapters/abstract}
+
+
+%\chapter*{Dedication}
+%hdfjladsfjadhsf
+
+%\chapter*{Declaration}
+%dkfhjadfj
+
+%\chapter*{Acknowledgements}
+%dfjhasdlf
+
+\tableofcontents
+
+\chapter{Introduction}\label{ch1}
+\pagenumbering{arabic}
+\input{0_Chapters/chapter1}
+
+\chapter{Solution Techniques for Equation of Motion}\label{ch2}
+\input{0_Chapters/chapter2}
+
+%\chapter{Conclusion}
+%\input{0_Chapters/conclusion}
+
+\appendix
+\chapter{Python Code Examples}
+\input{0_Chapters/appendix}
+
+\setcounter{biburllcpenalty}{7000}
+
+
+\printbibliography
+\end{document}
